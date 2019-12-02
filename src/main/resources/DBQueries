@@ -1,0 +1,82 @@
+
+-- create database lbms;
+
+USE lbms;
+
+CREATE TABLE UserLogin_Mst
+(
+pk_userLogId INT AUTO_INCREMENT PRIMARY KEY,
+loginId VARCHAR(20) NOT NULL UNIQUE,
+loginFName VARCHAR(50) NOT NULL,
+loginLName VARCHAR(50) NOT NULL,
+loginContact VARCHAR(15),
+loginEmail VARCHAR(50),
+loginPass NVARCHAR(50),
+isLoginActive BIT,
+isLoginCloseDate DATETIME,
+isAdmin BIT DEFAULT 0,
+loginCreatedDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+loginUpdDate DATETIME ON UPDATE CURRENT_TIMESTAMP
+);
+
+INSERT INTO UserLogin_Mst
+( loginId, loginFName, loginLName, loginContact, loginEmail, loginPass, isLoginActive, isAdmin )
+SELECT 'Admin', 'admin', 'admin', '1234567890', 'admin@gmail.com', 'Admin@321#', 1, 1;
+
+SELECT * FROM UserLogin_Mst;
+
+CREATE TABLE Librarian_Mst
+(
+pk_libId INT AUTO_INCREMENT PRIMARY KEY,
+libName VARCHAR(50) NOT NULL,
+libPass NVARCHAR(50) NOT NULL,
+libEmail VARCHAR(30),
+libAddress VARCHAR(100),
+libCity VARCHAR(30),
+libContact VARCHAR(15),
+isLibActive BIT,
+isLibCloseDate DATETIME,
+libInsetDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+libUpdDate DATETIME ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Book_Mst
+(
+pk_bookId INT AUTO_INCREMENT PRIMARY KEY,
+bookCode VARCHAR(20),
+bookName VARCHAR(50) NOT NULL,
+bookAuther VARCHAR(50),
+bookPublisher VARCHAR(50),
+bookQuantity INT,
+bookInsetDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+bookUpdDate DATETIME ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE BookIssue_Mst
+(
+pk_bkIssueId INT AUTO_INCREMENT PRIMARY KEY,
+fk_bookId INT REFERENCES Book_Mst(pk_bookId),
+issBookCode VARCHAR(20),
+issFk_StuId INT,
+issStuRollNo VARCHAR(20),
+issStuName VARCHAR(50),
+issStuContact VARCHAR(50),
+bookIssueDate DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE BookReturn_Mst
+(
+pk_bkRetId INT AUTO_INCREMENT PRIMARY KEY,
+fk_bkIssueId INT REFERENCES BookIssue_Mst(pk_bkIssueId),
+retBookCode VARCHAR(20),
+retFk_StuId INT,
+bookReturnDate DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+
+#DROP TABLE UserLogin_Mst;
+#DROP TABLE Librarian_Mst;
+#DROP TABLE Book_Mst;
+#DROP TABLE BookReturn_Mst;
+
